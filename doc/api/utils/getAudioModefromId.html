@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getAudioModefromId function from the utils library, for the Dart programming language.">
+  <title>getAudioModefromId function - utils library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">real_volume</a></li>
+    <li><a href="../utils/utils-library.html">utils</a></li>
+    <li class="self-crumb">getAudioModefromId function</li>
+  </ol>
+  <div class="self-name">getAudioModefromId</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-function">getAudioModefromId</span> function 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+</h1></div>
+
+    <section class="multi-line-signature">
+        
+
+<span class="returntype"><a href="../real_volume/AudioMode.html">AudioMode</a></span>
+<span class="name ">getAudioModefromId</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="getAudioModefromId-param-id"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">id</span></span></li>
+</ol>)
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">AudioMode getAudioModefromId(int id) {
+  switch (id) {
+    case -2:
+      return AudioMode.INVALID;
+    case -1:
+      return AudioMode.CURRENT;
+    case 0:
+      return AudioMode.NORMAL;
+    case 1:
+      return AudioMode.RINGTONE;
+    case 2:
+      return AudioMode.IN_CALL;
+    case 3:
+      return AudioMode.IN_COMMUNICATION;
+    case 4:
+      return AudioMode.CALL_SCREENING;
+    default:
+      return AudioMode.INVALID;
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">real_volume</a></li>
+  <li><a href="../utils/utils-library.html">utils</a></li>
+  <li class="self-crumb">getAudioModefromId function</li>
+</ol>
+
+
+    <h5>utils library</h5>
+    <ol>
+
+
+
+
+
+  <li class="section-title"><a href="../utils/utils-library.html#functions">Functions</a></li>
+  <li><a href="../utils/getAudioModefromId.html">getAudioModefromId</a></li>
+  <li><a href="../utils/getRingerModefromIndex.html">getRingerModefromIndex</a></li>
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-left-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    real_volume
+      0.1.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

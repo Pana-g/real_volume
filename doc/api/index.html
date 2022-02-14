@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 5.0.0">
+  <meta name="description" content="real_volume API docs, for the Dart programming language.">
+  <title>real_volume - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href=""
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/Pana-g/real_volume.git">real_volume package</a></li>
+  </ol>
+  <div class="self-name">real_volume</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="real_volume">real_volume</h1>
+<p>A Flutter audio/volume plugin which provides easy access to volume/audio related info like <code>Volume Level</code> for different <code>Stream Types</code>, <code>Ringer Mode</code> or even <code>Audio Mode</code>.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Get volume level based on stream type</li>
+<li>Use listener to detect volume level changes</li>
+<li>Change volume level for any stream type</li>
+<li>Get audio mode</li>
+<li>Change audio mode(?)</li>
+<li>Get ringer mode</li>
+<li>Use listener to detect ringer mode changes</li>
+<li>Change ringer mode</li>
+<li>Open do not disturb settings</li>
+<li>Check status of Do Not Disturb permission access</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<h3 id="android">Android</h3>
+<h4 id="permissions"><strong>Permissions</strong></h4>
+<p>No permissions are required for the majority of this plugin in Android. However, in order to switch <em>Do Not Disturb Mode</em> on/off you will need to enable this permission. To do so first you need to add the following to <code>AndroidManifest.xml</code>. This will make the app to appear in the <strong>Do Not Disturb Access</strong> list.</p>
+<pre class="language-xml"><code class="language-xml">&lt;manifest ... &gt;
+    &lt;uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/&gt;
+
+    &lt;application ... &gt;
+    ...
+&lt;/manifest&gt;
+</code></pre>
+<h4 id="_for-android-60-and-above_"><em>For Android 6.0 and above</em></h4>
+<p>For devices with Android 6.0 and above, additionally to the above it is required for the user to grant <strong>Do No Disturb Access</strong>.</p>
+<p>To check if the user has granted the permissions and prompt for approval</p>
+<pre class="language-dart"><code class="language-dart">import 'package:real_volume/real_volume.dart';
+
+bool? isPermissionGranted = await RealVolume.isPermissionGranted();
+
+if (!isPermissionGranted!) {
+  // Opens Do Not Disturb Access settings to grant the access
+  await RealVolume.openDoNotDisturbSettings();
+}
+</code></pre>
+<h3 id="api">API</h3>
+<p>Get <code>Ringer Mode</code>:</p>
+<pre class="language-dart"><code class="language-dart">import 'package:real_volume/real_volume.dart';
+
+RingerMode? ringerMode = await RealVolume.getRingerMode();
+print(ringerMode + 'Unknown');
+</code></pre>
+<p>Set <code>Ringer Mode</code>:</p>
+<pre class="language-dart"><code class="language-dart">import 'package:real_volume/real_volume.dart';
+
+// It will redirect the user to grant DND access if 'redirectIfNeeded' is set to true(default behavior)
+await RealVolume.setRingerMode(RingerMode.SILENT, redirectIfNeeded: false);
+</code></pre>
+<p>Get current <code>Volume Level</code> for <strong>Notifications</strong> :</p>
+<pre class="language-dart"><code class="language-dart">import 'package:real_volume/real_volume.dart';
+
+double notificationVolume = (await RealVolume.getCurrentVol(StreamType.NOTIFICATION)) ?? 0.0;
+print(notificationVolume+'');
+</code></pre>
+<p>Set current <code>Volume Level</code> for <strong>Media</strong> :</p>
+<pre class="language-dart"><code class="language-dart">import 'package:real_volume/real_volume.dart';
+
+await RealVolume.setVolume(0.75, showUI: true, streamType: StreamType.Media);
+</code></pre>
+<p>Get <code>Audio Mode</code>:</p>
+<pre class="language-dart"><code class="language-dart">import 'package:real_volume/real_volume.dart';
+
+AudioMode? audioMode = await RealVolume.getAudioMode();
+print(audioMode ?? 'Unknown');
+</code></pre>
+<p>Listener for <code>Volume level</code>:</p>
+<pre class="language-dart"><code class="language-dart">import 'package:real_volume/real_volume.dart';
+
+RealVolume.onVolumeChanged.listen((event) async {
+    int minVol = (await RealVolume.getMinVol(event.streamType)) ?? 0;
+    int maxVol = (await RealVolume.getMaxVol(event.streamType)) ?? 10;
+
+    setState(() {
+      minVolume = minVol;
+      maxVolume = maxVol;
+      currentVolume = event.volumeLevel;
+      sliderDivisions = maxVol - minVol;
+      selectedStreamType = event.streamType;
+    });
+});
+</code></pre>
+<h2 id="todo">TODO</h2>
+<ul>
+<li>Add support for iOS</li>
+<li>Add listener for <code>Audio Mode</code></li>
+<li>Ensure that <code>Set Audio Mode</code> works for every case</li>
+</ul>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="real_volume">
+  <span class="name"><a href="real_volume/real_volume-library.html">real_volume</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="utils">
+  <span class="name"><a href="utils/utils-library.html">utils</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="https://github.com/Pana-g/real_volume.git">real_volume package</a></li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">real_volume</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="real_volume/real_volume-library.html">real_volume</a></li>
+      <li><a href="utils/utils-library.html">utils</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    real_volume
+      0.1.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

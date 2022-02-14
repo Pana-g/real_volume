@@ -28,7 +28,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    () async {
+      print(await RealVolume.getCurrentVol(StreamType.MUSIC));
+    };
+    // initPlatformState();
+  }
+
+  printVol() async {
+    print(await RealVolume.getCurrentVol(StreamType.MUSIC));
   }
 
   Future<void> initPlatformState() async {
@@ -57,8 +64,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   onStreamTypeChanged(streamType) async {
-    int minVol = (await RealVolume.getMinVol(streamType)) ?? 0;
-    int maxVol = (await RealVolume.getMaxVol(streamType)) ?? 10;
+    int minVol = 0;
+    int maxVol = 10;
     double currentVol = (await RealVolume.getCurrentVol(streamType)) ?? 0;
     setState(() {
       minVolume = minVol;
@@ -69,8 +76,14 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  onValueChanged(double val) {
-    RealVolume.setVolume(val, showUI: showUI, streamType: selectedStreamType);
+  onValueChanged(double val) async {
+    bool? volumeChanged = await RealVolume.setVolume(val, showUI: showUI, streamType: selectedStreamType);
+    print(volumeChanged);
+    if(volumeChanged!){
+      setState(() {
+        currentVolume = val;
+      });
+    }
   }
 
   @override
@@ -151,7 +164,7 @@ class _MyAppState extends State<MyApp> {
               MaterialButton(
                 elevation: 2,
                 color: Colors.grey[100],
-                onPressed: () => RealVolume.openDoNotDisturbSettings(),
+                onPressed: () => printVol(),
                 child: const Text('Open DND Settings'),
               )
             ],

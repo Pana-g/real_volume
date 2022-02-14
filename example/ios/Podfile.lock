@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - real_volume (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - real_volume (from `.symlinks/plugins/real_volume/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  real_volume:
+    :path: ".symlinks/plugins/real_volume/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  real_volume: bcadd307e11021f02f66196d154952797b42d7f9
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.2

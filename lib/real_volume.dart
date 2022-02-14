@@ -15,6 +15,14 @@ class RealVolume {
   static const EventChannel _ringerModeEventChannel =
       EventChannel('real_volume_ringer_mode_change_event');
 
+  /// A listener that triggers a VolumeObj event when *volumeLevel*
+  /// of any *streamType* has changed.
+  ///
+  /// ```dart
+  /// RealVolume.onVolumeChanged.listen((event) {
+  ///      // do something
+  ///  });
+  /// ```
   static Stream<VolumeObj> get onVolumeChanged =>
       _volumeEventChannel.receiveBroadcastStream().map((event) {
         final obj = jsonDecode(event);
@@ -28,35 +36,68 @@ class RealVolume {
             streamType: StreamType.values[obj['streamType']], volumeLevel: vol);
       });
 
+  /// A listener that triggers a RingerMode event when device's
+  /// ringer mode has changed.
+  ///
+  /// ```dart
+  /// RealVolume.onVolumeChanged.listen((event) {
+  ///      // do something
+  ///  });
+  /// ```
   static Stream<RingerMode> get onRingerModeChanged =>
       _ringerModeEventChannel.receiveBroadcastStream().map((event) {
         return RingerMode.values[event];
       });
 
+  /// Returns max volume for a [streamType]
+  ///
+  /// ```dart
+  /// int notificationMaxVol = await RealVolume.getMaxVol(StreamType.NOTIFICATION);
+  /// ```
   static Future<int?> getMaxVol(StreamType streamType) async {
     final int? version = await _methodChannel
         .invokeMethod('getMaxVol', {'streamType': streamType.index});
     return version;
   }
 
+  /// Returns min volume for a [streamType]
+  ///
+  /// ```dart
+  /// int mediaMinVol = await RealVolume.getMinVol(StreamType.Media);
+  /// ```
   static Future<int?> getMinVol(StreamType streamType) async {
     final int? version = await _methodChannel
         .invokeMethod('getMinVol', {'streamType': streamType.index});
     return version;
   }
 
+  /// Returns current volume for a [streamType] in percentage(from 0.0 to 1.0).
+  ///
+  /// ```dart
+  /// double currentVolume = await RealVolume.getCurrentVol(StreamType.NOTIFICATION);
+  /// ```
   static Future<double?> getCurrentVol(StreamType streamType) async {
     final double? currentVolume = await _methodChannel
         .invokeMethod('getCurrentVol', {'streamType': streamType.index});
     return currentVolume;
   }
 
+  /// Returns current audioMode.
+  ///
+  /// ```dart
+  /// AudioMode currentAudioMode = await RealVolume.getAudioMode();
+  /// ```
   static Future<AudioMode?> getAudioMode() async {
     if (Platform.isIOS) return null;
     final int mode = (await _methodChannel.invokeMethod('getAudioMode')) ?? -2;
     return getAudioModefromId(mode);
   }
 
+  /// Returns current ringerMode.
+  ///
+  /// ```dart
+  /// RingerMode currentRingerMode = await RealVolume.getRingerMode();
+  /// ```
   static Future<RingerMode?> getRingerMode() async {
     if (Platform.isIOS) return null;
     final int ringerMode =
@@ -64,6 +105,11 @@ class RealVolume {
     return getRingerModefromIndex(ringerMode);
   }
 
+  /// Returns the status of the `Do not Disturb access` permission for this app.
+  ///
+  /// ```dart
+  /// bool? isPermissionGranted = await RealVolume.isPermissionGranted();
+  /// ```
   static Future<bool?> isPermissionGranted() async {
     if (Platform.isIOS) return null;
     final bool result =
@@ -71,6 +117,11 @@ class RealVolume {
     return result;
   }
 
+  /// Opens `Do not Disturb access` permission applications list.
+  ///
+  /// ```dart
+  /// await RealVolume.openDoNotDisturbSettings();
+  /// ```
   static Future<bool?> openDoNotDisturbSettings() async {
     if (Platform.isIOS) return null;
     final bool result =
@@ -79,6 +130,11 @@ class RealVolume {
     return result;
   }
 
+  /// Changes the [audioMode] of the device.
+  ///
+  /// ```dart
+  /// bool? audioModeChanged = await RealVolume.setAudioMode(AudioMode.IN_CALL);
+  /// ```
   static Future<bool?> setAudioMode(AudioMode audioMode) async {
     if (Platform.isIOS) return false;
     final bool? success = await _methodChannel
@@ -86,6 +142,11 @@ class RealVolume {
     return success;
   }
 
+  /// Changes the [ringerMode] of the device.
+  ///
+  /// ```dart
+  /// bool? ringerModeChanged = await RealVolume.setRingerMode(RingerMode.SILENT);
+  /// ```
   static Future<bool?> setRingerMode(RingerMode ringerMode,
       {bool redirectIfNeeded = true}) async {
     if (Platform.isIOS) return false;
@@ -95,11 +156,16 @@ class RealVolume {
         'redirectIfNeeded': redirectIfNeeded
       });
     } catch (e) {
-      print('Error: ' + e.toString());
+      throw Exception(e);
     }
-    return false;
   }
 
+  /// Changes the [volumeLevel] of the device for a specific [streamType].
+  /// You can also open the default device ui using [showUI].
+  ///
+  /// ```dart
+  /// bool? volumeChanged = await RealVolume.setVolume(0.7, streamType: StreamType.MEDIA, showUI: true);
+  /// ```
   static Future<bool?> setVolume(double volumeLevel,
       {StreamType streamType = StreamType.SYSTEM, bool showUI = false}) async {
     if (Platform.isIOS) return false;

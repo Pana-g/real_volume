@@ -168,7 +168,6 @@ class RealVolume {
   /// ```
   static Future<bool?> setVolume(double volumeLevel,
       {StreamType streamType = StreamType.SYSTEM, bool showUI = false}) async {
-    if (Platform.isIOS) return false;
     final bool? success = await _methodChannel.invokeMethod('setVolume', {
       'streamType': streamType.index,
       'volumeLevel': volumeLevel,

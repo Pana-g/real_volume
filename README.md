@@ -91,7 +91,7 @@ Set current `Volume Level` for **Music** :
 ```dart
 import 'package:real_volume/real_volume.dart';
 
-await RealVolume.setVolume(0.75, showUI: true, streamType: StreamType.Music);
+await RealVolume.setVolume(0.75, showUI: true, streamType: StreamType.MUSIC);
 ```
 
 Get `Audio Mode`:

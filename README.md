@@ -67,7 +67,7 @@ Get `Ringer Mode`:
 import 'package:real_volume/real_volume.dart';
 
 RingerMode? ringerMode = await RealVolume.getRingerMode();
-print(ringerMode + 'Unknown');
+print(ringerMode?.name ?? 'Unknown');
 ```
 
 Set `Ringer Mode`:
@@ -86,12 +86,12 @@ import 'package:real_volume/real_volume.dart';
 double notificationVolume = (await RealVolume.getCurrentVol(StreamType.NOTIFICATION)) ?? 0.0;
 print(notificationVolume+'');
 ```
-Set current `Volume Level` for **Media** :
+Set current `Volume Level` for **Music** :
  
 ```dart
 import 'package:real_volume/real_volume.dart';
 
-await RealVolume.setVolume(0.75, showUI: true, streamType: StreamType.Media);
+await RealVolume.setVolume(0.75, showUI: true, streamType: StreamType.Music);
 ```
 
 Get `Audio Mode`:
@@ -100,7 +100,7 @@ Get `Audio Mode`:
 import 'package:real_volume/real_volume.dart';
 
 AudioMode? audioMode = await RealVolume.getAudioMode();
-print(audioMode ?? 'Unknown');
+print(audioMode?.name ?? 'Unknown');
 ```
 Listener for `Volume level`:
  
@@ -108,20 +108,13 @@ Listener for `Volume level`:
 import 'package:real_volume/real_volume.dart';
 
 RealVolume.onVolumeChanged.listen((event) async {
-    int minVol = (await RealVolume.getMinVol(event.streamType)) ?? 0;
-    int maxVol = (await RealVolume.getMaxVol(event.streamType)) ?? 10;
-
     setState(() {
-      minVolume = minVol;
-      maxVolume = maxVol;
       currentVolume = event.volumeLevel;
-      sliderDivisions = maxVol - minVol;
       selectedStreamType = event.streamType;
     });
 });
 ```
 
 ## TODO
-- Add support for iOS
 - Add listener for `Audio Mode`
 - Ensure that `Set Audio Mode` works for every case

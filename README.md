@@ -16,7 +16,7 @@ A Flutter audio/volume plugin which provides easy access to volume/audio related
 ## Usage
 ### Android
 
-#### **Permissions**
+**Permissions**
 
 No permissions are required for the majority of this plugin in Android. However, in order to switch _Do Not Disturb Mode_ on/off you will need to enable this permission. To do so first you need to add the following to `AndroidManifest.xml`. This will make the app to appear in the **Do Not Disturb Access** list.
 ```xml
@@ -42,7 +42,22 @@ if (!isPermissionGranted!) {
 }
 ``` 
 
+### iOS
+#### <u>_Supported Fucntions for iOS devices_</u>
 
+- `getMaxVol`
+- `getMinVol`
+- `getCurrentVol`
+- `setVolume`
+- `getRingerMode` *(will return either RingerMode.`SILENT` or RingerMode.`NORMAL`)*
+
+#### <u>_Supported Listeners for iOS devices_</u>
+- `onVolumeChanged`
+- `onRingerModeChanged` *(event can be either RingerMode.`SILENT` or RingerMode.`NORMAL`)*
+
+> **_NOTE_1:_**  For iOS devices `streamType` is completely ignored when it passed as an argument and null when it is returned.
+
+> **_NOTE_2:_**  For iOS devices if you call `getRingerMode` <u>**AFTER**</u> you have subscribed to `onRingerModeChanged` listener the listener will stop working. So keep in mind that if you want to use both of them in the same project you need to cancel and re-subscribe to `onRingerModeChanged` listener <u>**AFTER**</u> you have called `getRingerMode` function.
 
 ### API
 

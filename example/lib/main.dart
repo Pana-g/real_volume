@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -15,7 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  StreamType selectedStreamType = StreamType.VOICE_CALL;
+  StreamType? selectedStreamType = StreamType.VOICE_CALL;
   double currentVolume = 0;
 
   late List<StreamType> menuItems = StreamType.values;
@@ -28,58 +30,53 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    () async {
-      print(await RealVolume.getCurrentVol(StreamType.MUSIC));
-    };
-    // initPlatformState();
-  }
-
-  printVol() async {
-    print(await RealVolume.getCurrentVol(StreamType.MUSIC));
+    initPlatformState();
   }
 
   Future<void> initPlatformState() async {
+    RingerMode rMode = (await RealVolume.getRingerMode()) ?? RingerMode.NORMAL;
+    setState(() {
+      ringerMode = rMode;
+    });
     RealVolume.onRingerModeChanged.listen((event) async {
       setState(() {
         ringerMode = event;
       });
-      if (selectedStreamType == StreamType.NOTIFICATION ||
-          selectedStreamType == StreamType.RING) {
-        double curVol =
-            (await RealVolume.getCurrentVol(selectedStreamType)) ?? 0;
-        setState(() {
-          currentVolume = curVol;
-        });
+      if (Platform.isAndroid) {
+        if (selectedStreamType == StreamType.NOTIFICATION ||
+            selectedStreamType == StreamType.RING) {
+          double curVol =
+              (await RealVolume.getCurrentVol(selectedStreamType)) ?? 0;
+          setState(() {
+            currentVolume = curVol;
+          });
+        }
       }
     });
     RealVolume.onVolumeChanged.listen((event) {
       onStreamTypeChanged(event.streamType);
     });
-    RingerMode rMode = (await RealVolume.getRingerMode())!;
-    setState(() {
-      ringerMode = rMode;
-    });
     onStreamTypeChanged(selectedStreamType);
     if (!mounted) return;
   }
 
-  onStreamTypeChanged(streamType) async {
-    int minVol = 0;
-    int maxVol = 10;
+  onStreamTypeChanged(StreamType? streamType) async {
+    int minVol = (await RealVolume.getMinVol(streamType)) ?? 0;
+    int maxVol = (await RealVolume.getMaxVol(streamType)) ?? 10;
     double currentVol = (await RealVolume.getCurrentVol(streamType)) ?? 0;
     setState(() {
       minVolume = minVol;
       maxVolume = maxVol;
       currentVolume = currentVol;
       sliderDivisions = maxVol - minVol;
-      selectedStreamType = streamType;
+      selectedStreamType = streamType ?? selectedStreamType;
     });
   }
 
   onValueChanged(double val) async {
-    bool? volumeChanged = await RealVolume.setVolume(val, showUI: showUI, streamType: selectedStreamType);
-    print(volumeChanged);
-    if(volumeChanged!){
+    bool? volumeChanged = await RealVolume.setVolume(val,
+        showUI: showUI, streamType: selectedStreamType);
+    if (volumeChanged!) {
       setState(() {
         currentVolume = val;
       });
@@ -97,27 +94,28 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: 8.0),
-                    child: Text('Volume Stream Type:'),
-                  ),
-                  DropdownButton<StreamType>(
-                    value: selectedStreamType,
-                    items: menuItems.map((StreamType streamType) {
-                      return DropdownMenuItem<StreamType>(
-                        value: streamType,
-                        child: Text(streamType.name),
-                      );
-                    }).toList(),
-                    onChanged: onStreamTypeChanged,
-                  ),
-                ],
-              ),
+              if (Platform.isAndroid)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(right: 8.0),
+                      child: Text('Volume Stream Type:'),
+                    ),
+                    DropdownButton<StreamType>(
+                      value: selectedStreamType,
+                      items: menuItems.map((StreamType streamType) {
+                        return DropdownMenuItem<StreamType>(
+                          value: streamType,
+                          child: Text(streamType.name),
+                        );
+                      }).toList(),
+                      onChanged: onStreamTypeChanged,
+                    ),
+                  ],
+                ),
               SizedBox(
-                width: 150,
+                width: 200,
                 child: CheckboxListTile(
                     title: const Text('Show UI'),
                     value: showUI,
@@ -141,32 +139,36 @@ class _MyAppState extends State<MyApp> {
                     padding: EdgeInsets.only(right: 8.0),
                     child: Text('Ringer Mode:'),
                   ),
-                  DropdownButton<RingerMode>(
-                      value: ringerMode,
-                      items: RingerMode.values.map((RingerMode ringerMode) {
-                        return DropdownMenuItem<RingerMode>(
+                  Platform.isAndroid
+                      ? DropdownButton<RingerMode>(
                           value: ringerMode,
-                          child: Text(ringerMode.name),
-                        );
-                      }).toList(),
-                      onChanged: (value) async {
-                        await RealVolume.setRingerMode(value!,
-                            redirectIfNeeded: false);
-                        RingerMode? rMode = (await RealVolume.getRingerMode());
-                        if (rMode != null) {
-                          setState(() {
-                            ringerMode = rMode;
-                          });
-                        }
-                      }),
+                          items: RingerMode.values.map((RingerMode ringerMode) {
+                            return DropdownMenuItem<RingerMode>(
+                              value: ringerMode,
+                              child: Text(ringerMode.name),
+                            );
+                          }).toList(),
+                          onChanged: (value) async {
+                            await RealVolume.setRingerMode(value!,
+                                redirectIfNeeded: false);
+                            RingerMode? rMode =
+                                (await RealVolume.getRingerMode());
+                            if (rMode != null) {
+                              setState(() {
+                                ringerMode = rMode;
+                              });
+                            }
+                          })
+                      : Text(ringerMode.name),
                 ],
               ),
-              MaterialButton(
-                elevation: 2,
-                color: Colors.grey[100],
-                onPressed: () => printVol(),
-                child: const Text('Open DND Settings'),
-              )
+              if (Platform.isAndroid)
+                MaterialButton(
+                  elevation: 2,
+                  color: Colors.grey[100],
+                  onPressed: () => RealVolume.openDoNotDisturbSettings(),
+                  child: const Text('Open DND Settings'),
+                )
             ],
           ),
         ),

@@ -43,7 +43,7 @@ if (!isPermissionGranted!) {
 ``` 
 
 ### iOS
-#### <u>_Supported Fucntions for iOS devices_</u>
+#### _Supported Fucntions for iOS devices_
 
 - `getMaxVol`
 - `getMinVol`
@@ -51,13 +51,13 @@ if (!isPermissionGranted!) {
 - `setVolume`
 - `getRingerMode` *(will return either RingerMode.`SILENT` or RingerMode.`NORMAL`)*
 
-#### <u>_Supported Listeners for iOS devices_</u>
+#### _Supported Listeners for iOS devices_
 - `onVolumeChanged`
 - `onRingerModeChanged` *(event can be either RingerMode.`SILENT` or RingerMode.`NORMAL`)*
 
 > **_NOTE_1:_**  For iOS devices `streamType` is completely ignored when it passed as an argument and null when it is returned.
 
-> **_NOTE_2:_**  For iOS devices if you call `getRingerMode` <u>**AFTER**</u> you have subscribed to `onRingerModeChanged` listener the listener will stop working. So keep in mind that if you want to use both of them in the same project you need to cancel and re-subscribe to `onRingerModeChanged` listener <u>**AFTER**</u> you have called `getRingerMode` function.
+> **_NOTE_2:_**  For iOS devices if you call `getRingerMode` **AFTER** you have subscribed to `onRingerModeChanged` listener the listener will stop working. So keep in mind that if you want to use both of them in the same project you need to cancel and re-subscribe to `onRingerModeChanged` listener **AFTER** you have called `getRingerMode` function.
 
 ### API
 

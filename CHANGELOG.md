@@ -1,3 +1,5 @@
+## 1.0.1
+- Fixed Readme
 ## 1.0.0
 - Added iOS Support
 - Updated Documentation

@@ -59,8 +59,8 @@ class RealVolume {
   /// int notificationMaxVol = await RealVolume.getMaxVol(StreamType.NOTIFICATION);
   /// ```
   static Future<int?> getMaxVol(StreamType? streamType) async {
-    final int? version = await _methodChannel.invokeMethod(
-        'getMaxVol', {'streamType': streamType?.index ?? StreamType.MUSIC.index});
+    final int? version = await _methodChannel.invokeMethod('getMaxVol',
+        {'streamType': streamType?.index ?? StreamType.MUSIC.index});
     return version;
   }
 
@@ -70,8 +70,8 @@ class RealVolume {
   /// int musicMinVol = await RealVolume.getMinVol(StreamType.MUSIC);
   /// ```
   static Future<int?> getMinVol(StreamType? streamType) async {
-    final int? version = await _methodChannel.invokeMethod(
-        'getMinVol', {'streamType': streamType?.index ?? StreamType.MUSIC.index});
+    final int? version = await _methodChannel.invokeMethod('getMinVol',
+        {'streamType': streamType?.index ?? StreamType.MUSIC.index});
     return version;
   }
 
@@ -82,7 +82,8 @@ class RealVolume {
   /// ```
   static Future<double?> getCurrentVol(StreamType? streamType) async {
     final double? currentVolume = await _methodChannel.invokeMethod(
-        'getCurrentVol', {'streamType': streamType?.index ?? StreamType.MUSIC.index});
+        'getCurrentVol',
+        {'streamType': streamType?.index ?? StreamType.MUSIC.index});
     return currentVolume;
   }
 

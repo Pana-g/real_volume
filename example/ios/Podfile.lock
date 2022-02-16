@@ -1,0 +1,29 @@
+PODS:
+  - Flutter (1.0.0)
+  - Mute (0.6.0)
+  - real_volume (0.0.1):
+    - Flutter
+    - Mute (~> 0.6.0)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - real_volume (from `.symlinks/plugins/real_volume/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Mute
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  real_volume:
+    :path: ".symlinks/plugins/real_volume/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  Mute: 66213d0aced6a074c7ab88b45ec20a9d54b1b7fb
+  real_volume: 6d09deeabb06963275fa8df0fb1616a5886363d6
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.2

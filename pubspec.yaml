@@ -1,6 +1,6 @@
 name: real_volume
 description: A Flutter audio/volume plugin which provides easy access to volume/audio related info.
-version: 1.0.5
+version: 1.0.6
 homepage: https://github.com/Pana-g/real_volume.git
 issue_tracker: https://github.com/Pana-g/real_volume/issues?q=is%3Aissue+is%3Aopen
 

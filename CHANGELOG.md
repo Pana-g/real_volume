@@ -1,3 +1,5 @@
+## 1.0.6
+- Fixed format in CHANGELOG.md
 ## 1.0.5
 - Updated Gradle
 - Fixed issue with Gradle sync

@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.android.tools.build:gradle:7.0.4'
     }
 }
 
@@ -32,9 +32,4 @@ android {
     defaultConfig {
         minSdkVersion 16
     }
-}
-
-dependencies {
-    provided files('tempLibs/flutter.jar')
-    provided "androidx.annotation:annotation:1.0.0"
 }

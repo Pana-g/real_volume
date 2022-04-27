@@ -1,3 +1,7 @@
+## 1.0.5
+- Updated Gradle
+- Fixed issue with Gradle sync
+- Changed conditional check(if) for Platform with (assert)
 ## 1.0.4
 - Formatted project
 ## 1.0.3

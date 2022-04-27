@@ -93,7 +93,7 @@ class RealVolume {
   /// AudioMode currentAudioMode = await RealVolume.getAudioMode();
   /// ```
   static Future<AudioMode?> getAudioMode() async {
-    if (Platform.isIOS) return null;
+    assert(Platform.isAndroid, 'Android only supported functionality.');
     final int mode = (await _methodChannel.invokeMethod('getAudioMode')) ?? -2;
     return getAudioModefromId(mode);
   }
@@ -115,7 +115,7 @@ class RealVolume {
   /// bool? isPermissionGranted = await RealVolume.isPermissionGranted();
   /// ```
   static Future<bool?> isPermissionGranted() async {
-    if (Platform.isIOS) return null;
+    assert(Platform.isAndroid, 'Android only supported functionality.');
     final bool result =
         (await _methodChannel.invokeMethod('isPermissionGranted')) ?? false;
     return result;
@@ -127,7 +127,7 @@ class RealVolume {
   /// await RealVolume.openDoNotDisturbSettings();
   /// ```
   static Future<bool?> openDoNotDisturbSettings() async {
-    if (Platform.isIOS) return null;
+    assert(Platform.isAndroid, 'Android only supported functionality.');
     final bool result =
         (await _methodChannel.invokeMethod('openDoNotDisturbSettings')) ??
             false;
@@ -140,7 +140,7 @@ class RealVolume {
   /// bool? audioModeChanged = await RealVolume.setAudioMode(AudioMode.IN_CALL);
   /// ```
   static Future<bool?> setAudioMode(AudioMode audioMode) async {
-    if (Platform.isIOS) return null;
+    assert(Platform.isAndroid, 'Android only supported functionality.');
     final bool? success = await _methodChannel
         .invokeMethod('setAudioMode', {'audioMode': audioMode.id});
     return success;
@@ -153,7 +153,7 @@ class RealVolume {
   /// ```
   static Future<bool?> setRingerMode(RingerMode ringerMode,
       {bool redirectIfNeeded = true}) async {
-    if (Platform.isIOS) return false;
+    assert(Platform.isAndroid, 'Android only supported functionality.');
     try {
       return await _methodChannel.invokeMethod('setRingerMode', {
         'ringerMode': ringerMode.index,

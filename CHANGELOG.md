@@ -1,3 +1,5 @@
+## 1.0.7
+- Fixed alarm volume listener not always work
 ## 1.0.6
 - Fixed format in CHANGELOG.md
 ## 1.0.5

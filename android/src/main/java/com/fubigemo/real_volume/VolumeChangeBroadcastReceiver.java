@@ -22,14 +22,11 @@ class VolumeChangeBroadcastReceiver extends BroadcastReceiver {
             CustomAudioService customAudioService = customAudioServiceWeakReference.get();
             if (customAudioService != null) {
                 int streamType = intent.getIntExtra(EXTRA_VOLUME_STREAM_TYPE, -1);
-                if(streamType >= 0 && streamType < 6) {
+                if (streamType >= 0 && streamType < 6) {
                     double volume = customAudioService.getCurrentVol(streamType);
-                    if (volume >= 0) {
-                        customAudioService.onVolumeChanged(streamType, volume);
-                    }
+                    customAudioService.onVolumeChanged(streamType, volume);
                 }
             }
         }
-
     }
 }

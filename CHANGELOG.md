@@ -1,4 +1,6 @@
-## 1.0.7
+## 1.0.8
+- Fixed namespace AGP 8. Thanks to @johnnguyen-ultra-messenger-39
+- ## 1.0.7
 - Fixed alarm volume listener not always work
 ## 1.0.6
 - Fixed format in CHANGELOG.md

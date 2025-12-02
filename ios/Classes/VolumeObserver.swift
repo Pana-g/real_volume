@@ -10,6 +10,7 @@ public class VolumeObserver {
     public func getVolume() -> Float? {
         let audioSession = AVAudioSession.sharedInstance()
         do {
+            try audioSession.setCategory(AVAudioSession.Category.playback, options: [.mixWithOthers])
             try audioSession.setActive(true)
             return audioSession.outputVolume
         } catch let _ {
@@ -69,7 +70,7 @@ public class VolumeListener: NSObject, FlutterStreamHandler {
     
     @objc func audioSessionObserver(){
         do {
-            try audioSession.setCategory(AVAudioSession.Category.ambient)
+            try audioSession.setCategory(AVAudioSession.Category.playback, options: [.mixWithOthers])
             try audioSession.setActive(true)
             if !isObserving {
                 audioSession.addObserver(self,

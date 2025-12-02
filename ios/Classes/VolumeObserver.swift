@@ -85,12 +85,14 @@ public class VolumeListener: NSObject, FlutterStreamHandler {
     }
     
     private func removeVolumeObserver() {
-        audioSession.removeObserver(self,
-                                    forKeyPath: volumeKey)
+        if isObserving {
+            audioSession.removeObserver(self,
+                                        forKeyPath: volumeKey)
+            isObserving = false
+        }
         notification.removeObserver(self,
                                     name: UIApplication.didBecomeActiveNotification,
                                     object: nil)
-        isObserving = false
     }
 
     
